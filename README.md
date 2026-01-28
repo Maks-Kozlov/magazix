@@ -1,6 +1,6 @@
 # Magazix
 
-Magazix is a lightweight, server-rendered e-commerce platform built with Django. It uses Django Templates for SSR, HTMX for partial page updates, and Alpine.js for small UI interactions - avoiding SPA complexity while keeping the interface responsive and fast. The project follows a modular, app-based architecture inspired by classic platforms like OpenCart, focusing on simplicity, SEO-friendliness, and maintainability.
+Magazix is a lightweight, server-rendered e-commerce platform built with Django. It uses Django Templates for SSR, Alpine AJAX for partial page updates, and Alpine.js for small UI interactions - avoiding SPA complexity while keeping the interface responsive and fast. The project follows a modular, app-based architecture inspired by classic platforms like OpenCart, focusing on simplicity, SEO-friendliness, and maintainability.
 
 [![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
