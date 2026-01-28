@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=magazix
+POSTGRES_USER=YAKKJIVAcECtSyYocQKRNjInrEhdkgXq
+POSTGRES_PASSWORD=Cv2AsLifzqIeioQNMh9gGIJvEyCCTSF8Ssww6uiFBqhvoxaDnseIGoKmpau2Esox
