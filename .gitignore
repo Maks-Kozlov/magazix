@@ -276,3 +276,6 @@ magazix/media/
 .env
 .envs/*
 !.envs/.local/
+
+# Tailwind standalone binary
+tailwindcss
