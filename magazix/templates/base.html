@@ -1,5 +1,5 @@
 
-{% load static i18n %}<!DOCTYPE html>
+{% load static i18n partials %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
@@ -32,6 +32,9 @@
 
 
 <!-- Your stuff: Third-party javascript libraries go here -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@imacrayon/alpine-ajax@0.10.1/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+  <script src="//instant.page/5.2.0" type="module" integrity="sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z"></script>
 
 
 <!-- place project specific Javascript in this file -->
@@ -66,13 +69,28 @@
     </nav>
   </div>
   <div class="container mx-auto px-4">
-    {% if messages %}
+    {% partialdef messages inline %}
+    <div id="messages" x-sync x-merge="append" class="toast-container fixed top-5 right-5 z-50 w-full max-w-sm">
       {% for message in messages %}
-        <div class="p-4 mb-4 text-sm rounded-lg {% if message.tags == 'error' %}bg-red-100 text-red-700{% elif message.tags == 'success' %}bg-green-100 text-green-700{% else %}bg-blue-100 text-blue-700{% endif %}">
-          {{ message }}
+        <div
+          class="alert flex justify-between items-center p-4 mb-2 rounded-lg shadow-lg text-white {% if message.tags == 'error' %}bg-red-600{% elif message.tags == 'success' %}bg-green-600{% elif message.tags == 'warning' %}bg-yellow-600{% else %}bg-blue-600{% endif %}"
+          x-data="{ show: false }"
+          x-show="show"
+          x-init="$nextTick(() => show = true); setTimeout(() => show = false, 5000)"
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 transform scale-90 translate-x-2"
+          x-transition:enter-end="opacity-100 transform scale-100 translate-x-0"
+          x-transition:leave="transition ease-in duration-300"
+          x-transition:leave-start="opacity-100 transform scale-100 translate-x-0"
+          x-transition:leave-end="opacity-0 transform scale-90 translate-x-2"
+          style="display: none;"
+        >
+          <span>{{ message }}</span>
+          <button @click="show = false" class="ml-4 font-bold focus:outline-none">&times;</button>
         </div>
       {% endfor %}
-    {% endif %}
+    </div>
+    {% endpartialdef %}
     {% block main %}
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>

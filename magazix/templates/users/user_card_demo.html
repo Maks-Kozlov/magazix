@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load partials %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-10">
+    <h2 class="text-2xl mb-4 font-bold">Alpine AJAX Demo</h2>
+    <p class="mb-6 text-gray-600">This card updates via Alpine AJAX without full page reloads, while maintaining Progressive Enhancement.</p>
+    
+    {% partialdef card inline %}
+        <div id="user-card" x-target="user-card" class="bg-white shadow-lg rounded-lg p-6 border border-gray-200">
+            {% if editing %}
+                <form action="{% url 'users:card_update' %}" method="post" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
+                        <input type="text" name="name" value="{{ user.name }}" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                    </div>
+                    <div class="flex items-center justify-between pt-2">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition">
+                            Save Changes
+                        </button>
+                         <a href="{% url 'users:card' %}" class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            {% else %}
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="h-12 w-12 rounded-full bg-blue-500 flex items-center justify-center text-white text-xl font-bold">
+                        {{ user.name|first|upper }}
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900">{{ user.name }}</h3>
+                        <p class="text-sm text-gray-500">{{ user.email }}</p>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-200 pt-4">
+                    <a href="{% url 'users:card_edit' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Edit Profile
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    {% endpartialdef %}
+</div>
+{% endblock %}

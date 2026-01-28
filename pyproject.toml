@@ -174,6 +174,7 @@ dependencies = [
     "django-environ==0.12.0",
     "django-model-utils==5.0.0",
     "django-redis==6.0.0",
+    "django-template-partials>=25.3",
     "flower==2.0.1",
     "gunicorn==24.1.1",
     "hiredis==3.3.0",

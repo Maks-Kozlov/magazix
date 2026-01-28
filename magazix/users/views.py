@@ -6,6 +6,10 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView
 from django.views.generic import RedirectView
 from django.views.generic import UpdateView
+from django.views.decorators.http import require_http_methods
+from django.shortcuts import redirect
+from django.contrib import messages
+from magazix.lib import AlpineTemplateResponse
 
 from magazix.users.models import User
 
@@ -44,3 +48,30 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 user_redirect_view = UserRedirectView.as_view()
+
+# Alpine AJAX Demo Views
+
+@require_http_methods(["GET"])
+def user_card_view(request):
+    if not request.user.is_authenticated:
+        return redirect("account_login")
+    return AlpineTemplateResponse(request, "users/user_card_demo.html", {"user": request.user})
+
+@require_http_methods(["GET"])
+def user_card_edit_view(request):
+    if not request.user.is_authenticated:
+        return redirect("account_login")
+    return AlpineTemplateResponse(request, "users/user_card_demo.html", {"user": request.user, "editing": True})
+
+@require_http_methods(["POST"])
+def user_card_update_view(request):
+    if not request.user.is_authenticated:
+        return redirect("account_login")
+        
+    name = request.POST.get("name")
+    if name:
+        request.user.name = name
+        request.user.save()
+        messages.success(request, "Profile updated via Alpine AJAX!")
+    
+    return AlpineTemplateResponse(request, "users/user_card_demo.html", {"user": request.user})

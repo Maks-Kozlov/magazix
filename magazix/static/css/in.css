@@ -1,1 +1,5 @@
 @import "tailwindcss" source("../../templates");
+
+@view-transition {
+  navigation: auto;
+}
