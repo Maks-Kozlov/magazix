@@ -279,3 +279,5 @@ magazix/media/
 
 # Tailwind standalone binary
 tailwindcss
+
+llm_data/

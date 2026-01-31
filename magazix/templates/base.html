@@ -1,21 +1,22 @@
 
-{% load static i18n partials %}<!DOCTYPE html>
+{% load static i18n partials meta %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
-<html lang="{{ LANGUAGE_CODE }}">
-  <head>
+<html lang="{{ LANGUAGE_CODE }}" {% meta_namespaces_schemaorg %}>
+  <head {% meta_namespaces %}>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>
       {% block title %}
-      Magazix
-    {% endblock title %}
-  </title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description"
-        content="Magazix is a lightweight, server-rendered e-commerce platform built with Django. It uses Django Templates for SSR, HTMX for partial page updates, and Alpine.js for small UI interactions - avoiding SPA complexity while keeping the interface responsive and fast. The project follows a modular, app-based architecture inspired by classic platforms like OpenCart, focusing on simplicity, SEO-friendliness, and maintainability." />
-  <meta name="author"
-        content="Maxim Kozlov" />
-  <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
+        {% if meta.title %}{{ meta.title }}{% else %}Magazix{% endif %}
+      {% endblock title %}
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% include "meta/meta.html" %}
+    {% block extra_head %}
+    {% endblock extra_head %}
+    {% block schema %}
+    {% endblock schema %}
+    <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
   {% block css %}
 <!-- Your stuff: Third-party CSS libraries go here -->
 <!-- This file stores project-specific CSS -->
@@ -48,7 +49,7 @@
 <body class="{% block bodyclass %}{% endblock bodyclass %}">
   {% block body %}
     {% include 'includes/header.html' %}
-  <div class="container mx-auto px-4">
+  <div class="container mx-auto px-4 mt-6">
     {% partialdef messages inline %}
     <div id="messages" x-sync x-merge="append" class="toast-container fixed top-5 right-5 z-50 w-full max-w-sm">
       {% for message in messages %}

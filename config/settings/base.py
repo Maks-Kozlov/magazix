@@ -80,6 +80,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "django_celery_beat",
     "template_partials",
+    "meta",
 ]
 
 LOCAL_APPS = [
@@ -326,3 +327,10 @@ SOCIALACCOUNT_FORMS = {"signup": "magazix.users.forms.UserSocialSignupForm"}
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+# django-meta
+# ------------------------------------------------------------------------------
+META_SITE_PROTOCOL = "https"
+META_USE_SITES = True
+META_USE_OG_PROPERTIES = True
+META_USE_TWITTER_PROPERTIES = True
+META_USE_SCHEMAORG_PROPERTIES = True

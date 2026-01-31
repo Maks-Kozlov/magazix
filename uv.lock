@@ -504,6 +504,15 @@ wheels = [
 ]
 
 [[package]]
+name = "django-meta"
+version = "2.5.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e1/07/fcbaa9b9a067f1717813534b1193b021c544b1f3fb5bfb8f312eca232d95/django_meta-2.5.0.tar.gz", hash = "sha256:e30669865bccff6be61765dfc57d97ee0a68ab7625efd081dd9045e17f3500c5", size = 29111, upload-time = "2025-04-18T13:15:28.913Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/16/ba/46f611931e00a5e9e0ac8fc6f28d3317a77894f07f7db637111c32dc1d79/django_meta-2.5.0-py2.py3-none-any.whl", hash = "sha256:94674286c8515314a025958af6bbcb44d6134d5a2ea3a61f680a852d334af88d", size = 27892, upload-time = "2025-04-18T13:15:27.677Z" },
+]
+
+[[package]]
 name = "django-model-utils"
 version = "5.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -924,6 +933,7 @@ dependencies = [
     { name = "django-celery-beat" },
     { name = "django-crispy-forms" },
     { name = "django-environ" },
+    { name = "django-meta" },
     { name = "django-model-utils" },
     { name = "django-redis" },
     { name = "django-template-partials" },
@@ -972,6 +982,7 @@ requires-dist = [
     { name = "django-celery-beat", specifier = "==2.8.1" },
     { name = "django-crispy-forms", specifier = "==2.5" },
     { name = "django-environ", specifier = "==0.12.0" },
+    { name = "django-meta", specifier = ">=2.5.0" },
     { name = "django-model-utils", specifier = "==5.0.0" },
     { name = "django-redis", specifier = "==6.0.0" },
     { name = "django-template-partials", specifier = ">=25.3" },
