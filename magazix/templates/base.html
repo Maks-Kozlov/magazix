@@ -46,10 +46,10 @@
 
 {% endblock javascript %}
 </head>
-<body class="{% block bodyclass %}{% endblock bodyclass %}">
+<body class="flex flex-col min-h-screen {% block bodyclass %}{% endblock bodyclass %}">
   {% block body %}
     {% include 'includes/header.html' %}
-  <div class="container mx-auto px-4 mt-6">
+  <div class="container mx-auto px-4 mt-6 flex-grow">
     {% partialdef messages inline %}
     <div id="messages" x-sync x-merge="append" class="toast-container fixed top-5 right-5 z-50 w-full max-w-sm">
       {% for message in messages %}
@@ -79,8 +79,8 @@
     {% endblock main %}
 
   </div>
-  {% endblock body %}
   {% include 'includes/footer.html' %}
+  {% endblock body %}
   <!-- /container -->
   {% block modal %}
   {% endblock modal %}
