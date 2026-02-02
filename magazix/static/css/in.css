@@ -1,5 +1,17 @@
 @import "tailwindcss" source("../../templates");
 
+@font-face {
+  font-family: 'Helvetica Bold';
+  src: url('../fonts/Helvetica-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 @view-transition {
   navigation: auto;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

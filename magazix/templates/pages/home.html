@@ -1,23 +1,258 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block hero %}
+<section class="relative w-full h-screen -mt-24 lg:-mt-32 overflow-hidden">
+    <img 
+        src="{% static 'images/banner123.jpg' %}" 
+        alt="Баннер" 
+        class="w-full h-full object-cover"
+    >
+    <div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent"></div>
+    <div class="absolute inset-0 flex items-center">
+        <div class="container mx-auto px-4">
+            <div class="max-w-2xl text-white">
+                <h1 class="text-4xl lg:text-6xl font-bold mb-4">Magazix</h1>
+                <p class="text-lg lg:text-xl mb-8 text-white/90">Современные решения для вашего бизнеса</p>
+                <a href="#" class="inline-block bg-[#ED1C24] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#C1000D] transition duration-300">
+                    Подробнее
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock hero %}
 
 {% block content %}
-<div class="text-center py-20">
-    <h1 class="text-4xl font-bold text-gray-900 mb-4">Welcome to Magazix</h1>
-    <p class="text-xl text-gray-600 mb-8">Modern Django + Alpine AJAX Demo</p>
-    
-    {% if request.user.is_authenticated %}
-        <a href="{% url 'users:card' %}" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-            View Alpine AJAX Demo
-        </a>
-    {% else %}
-        <div class="space-x-4">
-            <a href="{% url 'account_login' %}" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
-                Sign In to View Demo
-            </a>
-            <a href="{% url 'account_signup' %}" class="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition duration-300">
-                Sign Up
-            </a>
+<!-- Блок новостей -->
+<section class="py-16 bg-white" x-data="{ 
+    isDragging: false,
+    hasMoved: false,
+    startX: 0,
+    startMouseX: 0,
+    scrollLeft: 0,
+    slider: null,
+    isAnimating: false,
+    init() {
+        this.slider = this.$refs.slider;
+    },
+    startDrag(e) {
+        if (this.isAnimating) return;
+        this.isDragging = true;
+        this.hasMoved = false;
+        const pageX = e.pageX || e.touches[0].pageX;
+        this.startX = pageX - this.slider.offsetLeft;
+        this.startMouseX = pageX;
+        this.scrollLeft = this.slider.scrollLeft;
+        this.slider.style.cursor = 'grabbing';
+    },
+    drag(e) {
+        if (!this.isDragging) return;
+        e.preventDefault();
+        const pageX = e.pageX || e.touches[0].pageX;
+        const x = pageX - this.slider.offsetLeft;
+        const walk = (x - this.startX) * 1.5;
+        this.slider.scrollLeft = this.scrollLeft - walk;
+        
+        if (Math.abs(pageX - this.startMouseX) > 5) {
+            this.hasMoved = true;
+        }
+    },
+    stopDrag() {
+        this.isDragging = false;
+        this.slider.style.cursor = 'grab';
+    },
+    handleClick(e) {
+        if (this.hasMoved) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    },
+    smoothScrollTo(target, duration = 600) {
+        if (this.isAnimating) return;
+        this.isAnimating = true;
+        const start = this.slider.scrollLeft;
+        const distance = target - start;
+        const startTime = performance.now();
+        
+        const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+        
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = easeOutCubic(progress);
+            
+            this.slider.scrollLeft = start + (distance * eased);
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                this.isAnimating = false;
+            }
+        };
+        
+        requestAnimationFrame(animate);
+    },
+    scrollPrev() {
+        const cardWidth = this.slider.querySelector('article').offsetWidth + 24;
+        const target = Math.max(0, this.slider.scrollLeft - cardWidth);
+        this.smoothScrollTo(target);
+    },
+    scrollNext() {
+        const cardWidth = this.slider.querySelector('article').offsetWidth + 24;
+        const maxScroll = this.slider.scrollWidth - this.slider.clientWidth;
+        const target = Math.min(maxScroll, this.slider.scrollLeft + cardWidth);
+        this.smoothScrollTo(target);
+    }
+}">
+    <div class="container mx-auto px-4">
+        <!-- Заголовок и навигация -->
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-10">
+            <div class="flex items-center gap-6 lg:gap-10 mb-6 lg:mb-0">
+                <h2 class="text-2xl lg:text-3xl font-bold text-gray-900">НОВОСТИ</h2>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#" class="bg-gray-800 text-white px-6 py-2.5 text-sm font-medium hover:bg-gray-700 transition">
+                    СМОТРЕТЬ ВСЕ
+                </a>
+                <div class="flex items-center gap-2">
+                    <button 
+                        @click="scrollPrev()" 
+                        class="w-10 h-10 border border-gray-300 flex items-center justify-center transition hover:border-gray-500"
+                    >
+                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <button 
+                        @click="scrollNext()" 
+                        class="w-10 h-10 border border-gray-300 flex items-center justify-center transition hover:border-gray-500"
+                    >
+                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
-    {% endif %}
-</div>
+
+        <!-- Карусель новостей -->
+        <div 
+            x-ref="slider"
+            @mousedown="startDrag($event)"
+            @mousemove="drag($event)"
+            @mouseup="stopDrag()"
+            @mouseleave="stopDrag()"
+            @touchstart="startDrag($event)"
+            @touchmove="drag($event)"
+            @touchend="stopDrag()"
+            @click.capture="handleClick($event)"
+            @dragstart.prevent
+            class="flex gap-6 overflow-x-auto scrollbar-hide cursor-grab pb-4 -mb-4 scroll-smooth snap-x snap-mandatory"
+            style="scrollbar-width: none; -ms-overflow-style: none;"
+        >
+            <!-- Новость 1 -->
+            <article class="group flex-shrink-0 w-[85%] md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] snap-start select-none">
+                <a href="#" draggable="false" class="block relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-200">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-700 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                        <span class="text-white/50 text-6xl font-bold">1</span>
+                    </div>
+                    <div class="absolute top-4 left-4 bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 rounded">
+                        02.02.2026
+                    </div>
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-10">
+                        <h3 class="text-lg font-semibold text-white line-clamp-2">
+                            Заголовок новости номер один
+                        </h3>
+                    </div>
+                </a>
+            </article>
+
+            <!-- Новость 2 -->
+            <article class="group flex-shrink-0 w-[85%] md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] snap-start select-none">
+                <a href="#" draggable="false" class="block relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-200">
+                    <div class="absolute inset-0 bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                        <span class="text-white/50 text-6xl font-bold">2</span>
+                    </div>
+                    <div class="absolute top-4 left-4 bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 rounded">
+                        28.01.2026
+                    </div>
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-10">
+                        <h3 class="text-lg font-semibold text-white line-clamp-2">
+                            Получены сертификаты для новой продукции
+                        </h3>
+                    </div>
+                </a>
+            </article>
+
+            <!-- Новость 3 -->
+            <article class="group flex-shrink-0 w-[85%] md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] snap-start select-none">
+                <a href="#" draggable="false" class="block relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-200">
+                    <div class="absolute inset-0 bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                        <span class="text-white/50 text-6xl font-bold">3</span>
+                    </div>
+                    <div class="absolute top-4 left-4 bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 rounded">
+                        22.01.2026
+                    </div>
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-10">
+                        <h3 class="text-lg font-semibold text-white line-clamp-2">
+                            Интервью с руководителем отдела развития
+                        </h3>
+                    </div>
+                </a>
+            </article>
+
+            <!-- Новость 4 -->
+            <article class="group flex-shrink-0 w-[85%] md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] snap-start select-none">
+                <a href="#" draggable="false" class="block relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-200">
+                    <div class="absolute inset-0 bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                        <span class="text-white/50 text-6xl font-bold">4</span>
+                    </div>
+                    <div class="absolute top-4 left-4 bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 rounded">
+                        15.01.2026
+                    </div>
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-10">
+                        <h3 class="text-lg font-semibold text-white line-clamp-2">
+                            Открытие нового филиала в Санкт-Петербурге
+                        </h3>
+                    </div>
+                </a>
+            </article>
+
+            <!-- Новость 5 -->
+            <article class="group flex-shrink-0 w-[85%] md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] snap-start select-none">
+                <a href="#" draggable="false" class="block relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-200">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                        <span class="text-white/50 text-6xl font-bold">5</span>
+                    </div>
+                    <div class="absolute top-4 left-4 bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 rounded">
+                        10.01.2026
+                    </div>
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-10">
+                        <h3 class="text-lg font-semibold text-white line-clamp-2">
+                            Итоги работы компании за 2025 год
+                        </h3>
+                    </div>
+                </a>
+            </article>
+
+            <!-- Новость 6 -->
+            <article class="group flex-shrink-0 w-[85%] md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] snap-start select-none">
+                <a href="#" draggable="false" class="block relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-200">
+                    <div class="absolute inset-0 bg-gradient-to-br from-amber-500 to-yellow-600 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                        <span class="text-white/50 text-6xl font-bold">6</span>
+                    </div>
+                    <div class="absolute top-4 left-4 bg-white/90 px-3 py-1 text-sm font-medium text-gray-800 rounded">
+                        05.01.2026
+                    </div>
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 pt-10">
+                        <h3 class="text-lg font-semibold text-white line-clamp-2">
+                            С Новым Годом! Поздравление от коллектива
+                        </h3>
+                    </div>
+                </a>
+            </article>
+        </div>
+    </div>
+</section>
 {% endblock %}
