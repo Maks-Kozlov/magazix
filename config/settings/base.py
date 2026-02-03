@@ -81,10 +81,12 @@ THIRD_PARTY_APPS = [
     "django_celery_beat",
     "template_partials",
     "meta",
+    "mptt",
 ]
 
 LOCAL_APPS = [
     "magazix.users",
+    "magazix.catalog",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
