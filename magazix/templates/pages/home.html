@@ -3,21 +3,66 @@
 
 {% block hero %}
 <section class="relative w-full h-screen -mt-24 lg:-mt-32 overflow-hidden">
+    <!-- Мобильный баннер -->
     <img 
-        src="{% static 'images/banner123.jpg' %}" 
+        src="{% static 'images/375x720_baner.png' %}" 
         alt="Баннер" 
-        class="w-full h-full object-cover"
+        class="w-full h-full object-cover block lg:hidden"
     >
-    <div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent"></div>
-    <div class="absolute inset-0 flex items-center">
+    <!-- Десктопный баннер -->
+    <img 
+        src="{% static 'images/RUICHI_desktop_banner.png' %}" 
+        alt="Баннер" 
+        class="w-full h-full object-cover hidden lg:block"
+    >
+    
+    <!-- Градиент сверху (для обеих версий) -->
+    <div class="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/70 to-transparent pointer-events-none"></div>
+    <!-- Градиент снизу (для обеих версий) -->
+    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 to-transparent pointer-events-none"></div>
+    
+    <!-- Десктопная версия контента (с затемнением и блоком) -->
+    <div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent hidden lg:block"></div>
+    <div class="absolute inset-0 hidden lg:flex items-center">
         <div class="container mx-auto px-4">
-            <div class="max-w-2xl text-white">
-                <h1 class="text-4xl lg:text-6xl font-bold mb-4">Magazix</h1>
-                <p class="text-lg lg:text-xl mb-8 text-white/90">Современные решения для вашего бизнеса</p>
+            <div class="max-w-2xl text-white bg-black/30 backdrop-blur-sm rounded-3xl p-8 lg:p-12">
+                <h1 class="text-4xl lg:text-6xl font-bold mb-4">Почему выбирают нас?</h1>
+                <p class="text-lg lg:text-xl mb-1 text-white/90">- Широкий ассортимент</p>
+                <p class="text-lg lg:text-xl mb-1 text-white/90">- Высокое качество</p>
+                <p class="text-lg lg:text-xl mb-1 text-white/90">- Низкие цены</p>
+                <p class="text-lg lg:text-xl mb-1 text-white/90">- Быстрая доставка</p>
+                <p class="text-lg lg:text-xl mb-5 text-white/90">- Удобный сервис</p>
                 <a href="#" class="inline-block bg-[#ED1C24] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#C1000D] transition duration-300">
                     Подробнее
                 </a>
             </div>
+        </div>
+    </div>
+    
+    <!-- Мобильная версия контента (текст сверху и снизу) -->
+    <div class="absolute inset-0 flex flex-col justify-between pt-22 pb-8 px-5 lg:hidden">
+        <!-- Заголовок сверху -->
+        <div>
+            <h1 class="text-[32px] leading-[1.1] font-bold text-white uppercase" style="font-family: 'Helvetica Bold', Arial, sans-serif;">
+                Почему<br>выбирают нас?
+            </h1>
+        </div>
+        
+        <!-- Описание и кнопка снизу -->
+        <div class="space-y-4">
+            <div class="text-base text-white/90 leading-snug space-y-1">
+                <p>- Широкий ассортимент</p>
+                <p>- Высокое качество</p>
+                <p>- Низкие цены</p>
+                <p>- Быстрая доставка</p>
+                <p>- Удобный сервис</p>
+            </div>
+            <a href="#" class="flex items-center justify-center gap-2 w-full bg-white text-gray-900 py-4 text-sm font-medium tracking-wider uppercase hover:bg-gray-100 transition duration-300 rounded-sm">
+                Подробнее
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7V17"></path>
+                </svg>
+            </a>
         </div>
     </div>
 </section>
@@ -112,7 +157,7 @@
                 <h2 class="text-2xl lg:text-3xl font-bold text-gray-900">НОВОСТИ</h2>
             </div>
             <div class="flex items-center gap-4">
-                <a href="#" class="bg-gray-800 text-white px-6 py-2.5 text-sm font-medium hover:bg-gray-700 transition">
+                <a href="#" class="bg-gray-800 text-white px-6 py-2.5 text-sm font-medium hover:bg-gray-700 transition rounded-lg">
                     СМОТРЕТЬ ВСЕ
                 </a>
                 <div class="flex items-center gap-2">
@@ -255,4 +300,388 @@
         </div>
     </div>
 </section>
+
+<!-- Блок Каталог продукции -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <!-- Заголовок и кнопка -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10">
+            <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-0">КАТАЛОГ ПРОДУКЦИИ</h2>
+            <a href="#" class="inline-flex items-center gap-2 bg-[#ED1C24] text-white px-6 py-3 text-sm font-medium hover:bg-[#C1000D] transition rounded-lg">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 17v-2h2v2H8zm0-4v-2h2v2H8zm0-4V7h2v2H8zm4 8v-2h4v2h-4zm0-4v-2h4v2h-4z"/>
+                </svg>
+                Скачать каталог
+            </a>
+        </div>
+
+        <!-- Сетка категорий -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Карточка 1: Металлические каналы -->
+            <div class="group relative rounded-lg overflow-hidden cursor-pointer h-[320px]" x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
+                <!-- Фоновое изображение -->
+                <div class="absolute inset-0 bg-[#F5F5F5]">
+                    <!-- Placeholder: замените на <img src="{% static 'images/catalog/metal-channels.png' %}" alt="Металлические каналы" class="w-full h-full object-cover"> -->
+                    <div class="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                        <svg class="w-24 h-24 text-gray-500/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <!-- Контент поверх изображения -->
+                <a href="#" class="relative block h-full p-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Металлические каналы</h3>
+                    <p class="text-sm text-gray-500 mt-1">30 863 товаров</p>
+                </a>
+                <!-- Оверлей при наведении (матовое стекло) -->
+                <div 
+                    x-show="hover" 
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    class="absolute inset-0 bg-black/60 backdrop-blur-md p-6 flex flex-col"
+                >
+                    <div class="flex items-start justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-white">Металлические каналы</h3>
+                        <a href="#" class="text-white/70 hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="flex-1 space-y-3 text-sm">
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Листовые лотки - "S5 Combitech" (12 865)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Легкие листовые лотки - "S3 Combitech" (23)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Проволочные лотки - "F5 Combitech" (306)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Лестничные лотки - "L5 Combitech" (3 650)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Тяжелые лотки - "U5 Combitech" (4 668)</a>
+                    </div>
+                    <a href="#" class="text-[#ED1C24] text-sm font-medium hover:underline mt-4">Смотреть все</a>
+                </div>
+            </div>
+
+            <!-- Карточка 2: Трубы электротехнические -->
+            <div class="group relative rounded-lg overflow-hidden cursor-pointer h-[320px]" x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
+                <!-- Фоновое изображение -->
+                <div class="absolute inset-0 bg-[#F5F5F5]">
+                    <!-- Placeholder: замените на <img src="{% static 'images/catalog/pipes.png' %}" alt="Трубы электротехнические" class="w-full h-full object-cover"> -->
+                    <div class="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                        <svg class="w-24 h-24 text-gray-500/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <!-- Контент поверх изображения -->
+                <a href="#" class="relative block h-full p-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Трубы электротехнические</h3>
+                    <p class="text-sm text-gray-500 mt-1">2 431 товаров</p>
+                </a>
+                <!-- Оверлей при наведении (матовое стекло) -->
+                <div 
+                    x-show="hover" 
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    class="absolute inset-0 bg-black/60 backdrop-blur-md p-6 flex flex-col"
+                >
+                    <div class="flex items-start justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-white">Трубы электротехнические</h3>
+                        <a href="#" class="text-white/70 hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="flex-1 space-y-3 text-sm">
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Гофрированные трубы ПВХ (856)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Гофрированные трубы ПНД (432)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Жесткие трубы (318)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Металлорукава (524)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Аксессуары для труб (301)</a>
+                    </div>
+                    <a href="#" class="text-[#ED1C24] text-sm font-medium hover:underline mt-4">Смотреть все</a>
+                </div>
+            </div>
+
+            <!-- Карточка 3: Промышленная автоматизация -->
+            <div class="group relative rounded-lg overflow-hidden cursor-pointer h-[320px]" x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
+                <!-- Фоновое изображение -->
+                <div class="absolute inset-0 bg-[#F5F5F5]">
+                    <!-- Placeholder: замените на <img src="{% static 'images/catalog/automation.png' %}" alt="Промышленная автоматизация" class="w-full h-full object-cover"> -->
+                    <div class="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                        <svg class="w-24 h-24 text-gray-500/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <!-- Контент поверх изображения -->
+                <a href="#" class="relative block h-full p-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Промышленная автоматизация – "Mitra"</h3>
+                    <p class="text-sm text-gray-500 mt-1">1 493 товаров</p>
+                </a>
+                <!-- Оверлей при наведении (матовое стекло) -->
+                <div 
+                    x-show="hover" 
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    class="absolute inset-0 bg-black/60 backdrop-blur-md p-6 flex flex-col"
+                >
+                    <div class="flex items-start justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-white">Промышленная автоматизация – "Mitra"</h3>
+                        <a href="#" class="text-white/70 hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="flex-1 space-y-3 text-sm">
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Контроллеры ПЛК (245)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Панели оператора (128)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Частотные преобразователи (367)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Модули ввода/вывода (453)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Блоки питания (300)</a>
+                    </div>
+                    <a href="#" class="text-[#ED1C24] text-sm font-medium hover:underline mt-4">Смотреть все</a>
+                </div>
+            </div>
+
+            <!-- Карточка 4: Корпусные решения для автоматизации -->
+            <div class="group relative rounded-lg overflow-hidden cursor-pointer h-[320px]" x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
+                <!-- Фоновое изображение -->
+                <div class="absolute inset-0 bg-[#F5F5F5]">
+                    <!-- Placeholder: замените на <img src="{% static 'images/catalog/enclosures.png' %}" alt="Корпусные решения" class="w-full h-full object-cover"> -->
+                    <div class="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                        <svg class="w-24 h-24 text-gray-500/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <!-- Контент поверх изображения -->
+                <a href="#" class="relative block h-full p-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Корпусные решения для автоматизации</h3>
+                    <p class="text-sm text-gray-500 mt-1">5 461 товаров</p>
+                </a>
+                <!-- Оверлей при наведении (матовое стекло) -->
+                <div 
+                    x-show="hover" 
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    class="absolute inset-0 bg-black/60 backdrop-blur-md p-6 flex flex-col"
+                >
+                    <div class="flex items-start justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-white">Корпусные решения для автоматизации</h3>
+                        <a href="#" class="text-white/70 hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="flex-1 space-y-3 text-sm">
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Напольные шкафы (1 245)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Настенные шкафы (2 132)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Компактные корпуса (856)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Пульты управления (628)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Аксессуары для шкафов (600)</a>
+                    </div>
+                    <a href="#" class="text-[#ED1C24] text-sm font-medium hover:underline mt-4">Смотреть все</a>
+                </div>
+            </div>
+
+            <!-- Карточка 5: Модульное оборудование -->
+            <div class="group relative rounded-lg overflow-hidden cursor-pointer h-[320px]" x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
+                <!-- Фоновое изображение -->
+                <div class="absolute inset-0 bg-[#F5F5F5]">
+                    <!-- Placeholder: замените на <img src="{% static 'images/catalog/modular.png' %}" alt="Модульное оборудование" class="w-full h-full object-cover"> -->
+                    <div class="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                        <svg class="w-24 h-24 text-gray-500/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <!-- Контент поверх изображения -->
+                <a href="#" class="relative block h-full p-6">
+                    <h3 class="text-xl font-semibold text-gray-900">Модульное оборудование</h3>
+                    <p class="text-sm text-gray-500 mt-1">1 589 товаров</p>
+                </a>
+                <!-- Оверлей при наведении (матовое стекло) -->
+                <div 
+                    x-show="hover" 
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    class="absolute inset-0 bg-black/60 backdrop-blur-md p-6 flex flex-col"
+                >
+                    <div class="flex items-start justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-white">Модульное оборудование</h3>
+                        <a href="#" class="text-white/70 hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="flex-1 space-y-3 text-sm">
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Автоматические выключатели (456)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">УЗО и дифавтоматы (312)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Контакторы модульные (287)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Реле и таймеры (234)</a>
+                        <a href="#" class="block text-white/80 hover:text-[#ED1C24] transition">Ограничители перенапряжения (300)</a>
+                    </div>
+                    <a href="#" class="text-[#ED1C24] text-sm font-medium hover:underline mt-4">Смотреть все</a>
+                </div>
+            </div>
+
+            <!-- Карточка 6: Статистика (черная/красная при наведении) -->
+            <div 
+                class="group relative rounded-lg overflow-hidden cursor-pointer bg-[#1A1A1A] hover:bg-[#ED1C24] transition-colors duration-300 h-[320px]"
+            >
+                <a href="#" class="block h-full p-6 flex flex-col justify-between">
+                    <div>
+                        <p class="text-5xl lg:text-6xl font-bold text-white mb-4">49 000+</p>
+                        <p class="text-white/80 text-sm leading-relaxed">
+                            наименований продукции в каталоге, сделанных в том числе по собственным патентам и инновационным программам
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-white font-medium">КАТАЛОГ</span>
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Блок Кто мы? -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <!-- Заголовок и кнопка -->
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-8">
+            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 sm:mb-0">Кто мы?</h2>
+            <a href="#" class="inline-block bg-gray-900 text-white px-6 py-3 text-sm font-medium tracking-wider hover:bg-gray-800 transition rounded-lg">
+                ПОДРОБНЕЕ О КОМПАНИИ
+            </a>
+        </div>
+
+        <!-- Изображение -->
+        <div class="relative rounded-lg overflow-hidden mb-8">
+            <img 
+                src="{% static 'images/about-team.jpg' %}" 
+                alt="Команда компании" 
+                class="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            >
+            <!-- Placeholder если изображение не загрузилось -->
+            <div class="hidden w-full h-[300px] md:h-[400px] lg:h-[500px] bg-gradient-to-r from-gray-200 to-gray-300 items-center justify-center">
+                <svg class="w-32 h-32 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Текст описания -->
+        <p class="text-gray-600 text-base lg:text-lg leading-relaxed max-w-4xl mb-10">
+            Высокотехнологичное оборудование, квалифицированные специалисты, превосходное сырьё 
+            позволили нам с самого старта представлять первоклассную продукцию, которая отвечает 
+            самым современным требованиям мировых стандартов
+        </p>
+    </div>
+
+    <!-- Бесконечная бегущая строка -->
+    <div class="relative overflow-hidden py-8">
+        <div class="marquee-container flex">
+            <div class="marquee-content flex animate-marquee">
+                <!-- Статистика (дублируется для бесшовной анимации) -->
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">18+</span>
+                    <span class="text-gray-500 text-sm lg:text-base">лет на рынке</span>
+                </div>
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">10</span>
+                    <span class="text-gray-500 text-sm lg:text-base">стран<br>присутствия</span>
+                </div>
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">3000+</span>
+                    <span class="text-gray-500 text-sm lg:text-base">активных клиентов</span>
+                </div>
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">18+</span>
+                    <span class="text-gray-500 text-sm lg:text-base">лет на рынке</span>
+                </div>
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">10</span>
+                    <span class="text-gray-500 text-sm lg:text-base">стран<br>присутствия</span>
+                </div>
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">3000+</span>
+                    <span class="text-gray-500 text-sm lg:text-base">активных клиентов</span>
+                </div>
+            </div>
+            <div class="marquee-content flex animate-marquee" aria-hidden="true">
+                <!-- Дубликат для бесшовной анимации -->
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">18+</span>
+                    <span class="text-gray-500 text-sm lg:text-base">лет на рынке</span>
+                </div>
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">10</span>
+                    <span class="text-gray-500 text-sm lg:text-base">стран<br>присутствия</span>
+                </div>
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">3000+</span>
+                    <span class="text-gray-500 text-sm lg:text-base">активных клиентов</span>
+                </div>
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">18+</span>
+                    <span class="text-gray-500 text-sm lg:text-base">лет на рынке</span>
+                </div>
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">10</span>
+                    <span class="text-gray-500 text-sm lg:text-base">стран<br>присутствия</span>
+                </div>
+                <div class="flex items-center gap-4 px-8 lg:px-12 whitespace-nowrap">
+                    <span class="text-4xl lg:text-5xl font-bold text-[#ED1C24]">3000+</span>
+                    <span class="text-gray-500 text-sm lg:text-base">активных клиентов</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    @keyframes marquee {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+    
+    .animate-marquee {
+        animation: marquee 25s linear infinite;
+    }
+    
+    .marquee-container:hover .animate-marquee {
+        animation-play-state: paused;
+    }
+</style>
 {% endblock %}
