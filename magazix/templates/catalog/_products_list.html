@@ -1,0 +1,297 @@
+{% load static %}
+<style>
+    #products-container[aria-busy="true"]::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.8);
+        z-index: 10;
+    }
+    #products-container[aria-busy="true"]::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 40px;
+        height: 40px;
+        margin: -20px 0 0 -20px;
+        border: 3px solid #e5e7eb;
+        border-top-color: #ED1C24;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        z-index: 11;
+    }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+</style>
+<div id="products-container" x-data="{ viewMode: '{{ view_mode }}', baseUrl: '{% url 'catalog:category_products_partial' category.slug %}' }" class="relative">
+    <!-- Панель управления -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-200">
+        <div class="flex items-center gap-4">
+            <!-- Переключатель вида -->
+            <div class="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+                <button 
+                    type="button"
+                    @click="viewMode = 'list'"
+                    class="p-2 transition-colors cursor-pointer"
+                    :class="viewMode === 'list' ? 'bg-gray-100 text-gray-900' : 'text-gray-400 hover:text-gray-600'"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <button 
+                    type="button"
+                    @click="viewMode = 'grid'"
+                    class="p-2 transition-colors cursor-pointer"
+                    :class="viewMode === 'grid' ? 'bg-gray-100 text-gray-900' : 'text-gray-400 hover:text-gray-600'"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Счётчик товаров -->
+            <span class="text-sm text-gray-600">
+                Найдено {{ products_count }} товар{% if products_count != 1 %}{% if products_count < 5 %}а{% else %}ов{% endif %}{% endif %}
+            </span>
+        </div>
+        
+        <!-- Показать по -->
+        <div class="relative" x-data="{ open: false }">
+            <button 
+                @click="open = !open"
+                class="flex items-center gap-2 text-sm text-gray-700 hover:text-gray-900 transition-colors"
+            >
+                Показать по {{ per_page }}
+                <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+            <div 
+                x-show="open" 
+                @click.away="open = false"
+                x-cloak
+                class="absolute right-0 top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-10 min-w-32"
+            >
+                {% for option in per_page_options %}
+                <a 
+                    :href="baseUrl + '?per_page={{ option }}&view=' + viewMode"
+                    x-target="products-container"
+                    @click="open = false"
+                    class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors {% if per_page == option %}text-[#ED1C24] font-medium{% else %}text-gray-700{% endif %}"
+                >
+                    Показать по {{ option }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Список товаров (list режим) -->
+    <div x-show="viewMode === 'list'" class="space-y-4">
+        {% for product in products %}
+        <div class="flex gap-4 lg:gap-6 p-4 border border-gray-100 rounded-lg hover:shadow-md transition-shadow">
+            <!-- Изображение -->
+            <div class="flex-shrink-0 w-24 h-24 lg:w-32 lg:h-32">
+                {% with main_image=product.images.all|first %}
+                {% if main_image %}
+                <img 
+                    src="{{ main_image.image.url }}" 
+                    alt="{{ product.name }}" 
+                    class="w-full h-full object-contain"
+                >
+                {% else %}
+                <div class="w-full h-full bg-gray-100 rounded flex items-center justify-center">
+                    <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                {% endif %}
+                {% endwith %}
+            </div>
+            
+            <!-- Информация о товаре -->
+            <div class="flex-1 min-w-0">
+                <h3 class="text-base lg:text-lg font-semibold text-gray-900 mb-1">
+                    <a href="{{ product.get_absolute_url }}" class="hover:text-[#ED1C24] transition-colors">
+                        {{ product.name }}
+                    </a>
+                </h3>
+                <p class="text-sm text-gray-500 mb-2">
+                    Артикул: {{ product.sku }}
+                </p>
+                <p class="text-sm text-gray-600">
+                    Серия: {{ product.product_type.name }}
+                </p>
+            </div>
+            
+            <!-- Кнопка -->
+            <div class="flex-shrink-0 flex items-center">
+                <button class="bg-[#ED1C24] text-white px-4 py-2 rounded text-sm font-medium hover:bg-[#C1000D] transition-colors">
+                    В корзину
+                </button>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-gray-500 text-center py-8">Товары не найдены</p>
+        {% endfor %}
+    </div>
+    
+    <!-- Сетка товаров (grid режим) -->
+    <div x-show="viewMode === 'grid'" x-cloak class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+        {% for product in products %}
+        <div class="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <!-- Изображение -->
+            <div class="w-full aspect-square mb-4">
+                {% with main_image=product.images.all|first %}
+                {% if main_image %}
+                <img 
+                    src="{{ main_image.image.url }}" 
+                    alt="{{ product.name }}" 
+                    class="w-full h-full object-contain"
+                >
+                {% else %}
+                <div class="w-full h-full bg-gray-100 rounded flex items-center justify-center">
+                    <svg class="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                {% endif %}
+                {% endwith %}
+            </div>
+            
+            <!-- Информация -->
+            <h3 class="text-sm font-semibold text-gray-900 mb-1 line-clamp-2">
+                <a href="{{ product.get_absolute_url }}" class="hover:text-[#ED1C24] transition-colors">
+                    {{ product.name }}
+                </a>
+            </h3>
+            <p class="text-xs text-gray-500 mb-4">
+                Артикул: {{ product.sku }}
+            </p>
+            
+            <!-- Кнопка -->
+            <button class="w-full bg-[#ED1C24] text-white py-2 rounded text-sm font-medium hover:bg-[#C1000D] transition-colors">
+                В корзину
+            </button>
+        </div>
+        {% empty %}
+        <p class="col-span-full text-gray-500 text-center py-8">Товары не найдены</p>
+        {% endfor %}
+    </div>
+    
+    <!-- Пагинация -->
+    {% if products.has_other_pages %}
+    {% with total_pages=products.paginator.num_pages current=products.number %}
+    <nav class="mt-8 flex justify-center">
+        <ul class="flex items-center gap-1">
+            <!-- Стрелка назад -->
+            {% if products.has_previous %}
+            <li>
+                <a 
+                    :href="baseUrl + '?per_page={{ per_page }}&page={{ products.previous_page_number }}&view=' + viewMode"
+                    x-target="products-container"
+                    class="px-3 py-2 text-sm text-gray-400 hover:text-gray-600 transition-colors inline-block"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+            </li>
+            {% endif %}
+            
+            <!-- Первая страница -->
+            {% if current == 1 %}
+            <li>
+                <span class="w-9 h-9 flex items-center justify-center text-sm font-medium text-white bg-[#3D4451] rounded">1</span>
+            </li>
+            {% else %}
+            <li>
+                <a 
+                    :href="baseUrl + '?per_page={{ per_page }}&page=1&view=' + viewMode"
+                    x-target="products-container"
+                    class="w-9 h-9 flex items-center justify-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                    1
+                </a>
+            </li>
+            {% endif %}
+            
+            <!-- Многоточие после первой страницы -->
+            {% if current > 4 %}
+            <li>
+                <span class="px-2 text-sm text-gray-400">...</span>
+            </li>
+            {% endif %}
+            
+            <!-- Страницы вокруг текущей -->
+            {% for num in products.paginator.page_range %}
+                {% if num != 1 and num != total_pages %}
+                    {% if num >= current|add:'-2' and num <= current|add:'2' %}
+                        {% if current == num %}
+                        <li>
+                            <span class="w-9 h-9 flex items-center justify-center text-sm font-medium text-white bg-[#3D4451] rounded">{{ num }}</span>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a 
+                                :href="baseUrl + '?per_page={{ per_page }}&page={{ num }}&view=' + viewMode"
+                                x-target="products-container"
+                                class="w-9 h-9 flex items-center justify-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                            >
+                                {{ num }}
+                            </a>
+                        </li>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            
+            <!-- Многоточие перед последней страницей -->
+            {% if current < total_pages|add:'-3' %}
+            <li>
+                <span class="px-2 text-sm text-gray-400">...</span>
+            </li>
+            {% endif %}
+            
+            <!-- Последняя страница -->
+            {% if total_pages > 1 %}
+                {% if current == total_pages %}
+                <li>
+                    <span class="w-9 h-9 flex items-center justify-center text-sm font-medium text-white bg-[#3D4451] rounded">{{ total_pages }}</span>
+                </li>
+                {% else %}
+                <li>
+                    <a 
+                        :href="baseUrl + '?per_page={{ per_page }}&page={{ total_pages }}&view=' + viewMode"
+                        x-target="products-container"
+                        class="w-9 h-9 flex items-center justify-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                    >
+                        {{ total_pages }}
+                    </a>
+                </li>
+                {% endif %}
+            {% endif %}
+            
+            <!-- Стрелка вперёд -->
+            {% if products.has_next %}
+            <li>
+                <a 
+                    :href="baseUrl + '?per_page={{ per_page }}&page={{ products.next_page_number }}&view=' + viewMode"
+                    x-target="products-container"
+                    class="px-3 py-2 text-sm text-gray-400 hover:text-gray-600 transition-colors inline-block"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endwith %}
+    {% endif %}
+</div>

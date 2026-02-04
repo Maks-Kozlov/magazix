@@ -31,7 +31,7 @@ class Category(ModelMeta, MPTTModel):
     _metadata = {
         "title": "meta_title",
         "description": "meta_description",
-        "keywords": "meta_keywords",
+        "keywords": "get_meta_keywords",
         "image": "get_meta_image",
     }
 
@@ -44,6 +44,11 @@ class Category(ModelMeta, MPTTModel):
 
     def __str__(self):
         return self.name
+
+    def get_meta_keywords(self):
+        if self.meta_keywords:
+            return [k.strip() for k in self.meta_keywords.split(",")]
+        return []
 
     def get_meta_image(self):
         if self.image:

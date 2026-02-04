@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block hero %}
+<section class="relative w-full bg-[#3C3C3C] -mt-24 lg:-mt-32 pt-32 lg:pt-44 pb-12 lg:pb-16 overflow-hidden">
+    <!-- Градиент сверху -->
+    <div class="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/70 to-transparent pointer-events-none"></div>
+    <!-- Градиент снизу -->
+    <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 to-transparent pointer-events-none"></div>
+    
+    <div class="relative z-10 mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+        <!-- Хлебные крошки -->
+        <nav class="mb-6" aria-label="Breadcrumb">
+            <ol class="flex items-center gap-2 text-sm">
+                <li>
+                    <a href="{% url 'home' %}" class="text-white/70 hover:text-white transition-colors">
+                        Главная
+                    </a>
+                </li>
+                <li class="text-white/50">—</li>
+                <li>
+                    <a href="{% url 'catalog:category_list' %}" class="text-white/70 hover:text-white transition-colors">
+                        Каталог
+                    </a>
+                </li>
+                {% if category.parent %}
+                <li class="text-white/50">—</li>
+                <li>
+                    <a href="{{ category.parent.get_absolute_url }}" class="text-white/70 hover:text-white transition-colors">
+                        {{ category.parent.name }}
+                    </a>
+                </li>
+                {% endif %}
+                <li class="text-white/50">—</li>
+                <li class="text-white/70">{{ category.name }}</li>
+            </ol>
+        </nav>
+
+        <!-- Контент: изображение слева, текст справа -->
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-10 items-start mb-10">
+            <!-- Изображение категории -->
+            <div class="flex-shrink-0 w-40 lg:w-48">
+                {% if category.image %}
+                <img 
+                    src="{{ category.image.url }}" 
+                    alt="{{ category.name }}" 
+                    class="w-full h-auto object-contain max-h-40 lg:max-h-48"
+                >
+                {% else %}
+                <div class="w-full h-40 lg:h-48 bg-white/10 rounded-lg flex items-center justify-center">
+                    <svg class="w-12 h-12 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Текстовый контент -->
+            <div class="flex-1">
+                <h1 class="text-2xl lg:text-4xl font-bold text-white mb-3" style="font-family: 'Helvetica Bold', Arial, sans-serif;">
+                    {{ category.name }}
+                </h1>
+                
+                {% if category.meta_description %}
+                <p class="text-white/70 text-sm lg:text-base leading-relaxed mb-4 max-w-2xl">
+                    {{ category.meta_description }}
+                </p>
+                {% endif %}
+
+                <a href="#" class="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors text-sm">
+                    Скачать прайс-лист
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Подкатегории (для категорий верхнего уровня) -->
+        {% if category.children.all %}
+        <div class="border-t border-white/20 pt-8">
+            <h2 class="text-white text-lg font-semibold mb-6">Подкатегории</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+                {% for child in category.children.all %}
+                <a href="{{ child.get_absolute_url }}" class="group flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
+                    <div class="flex-shrink-0 w-14 h-14 lg:w-16 lg:h-16">
+                        {% if child.image %}
+                        <img 
+                            src="{{ child.image.url }}" 
+                            alt="{{ child.name }}" 
+                            class="w-full h-full object-contain"
+                        >
+                        {% else %}
+                        <div class="w-full h-full bg-white/10 rounded flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <span class="text-white/80 group-hover:text-white text-sm transition-colors">
+                        {{ child.name }}
+                    </span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% elif category.product_types.all %}
+        <!-- Серии (для подкатегорий) -->
+        <div class="border-t border-white/20 pt-8">
+            <h2 class="text-white text-lg font-semibold mb-6">Серии</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+                {% for product_type in category.product_types.all %}
+                <a href="{{ product_type.get_absolute_url }}" class="group flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition-colors">
+                    <div class="flex-shrink-0 w-14 h-14 lg:w-16 lg:h-16">
+                        {% if product_type.image %}
+                        <img 
+                            src="{{ product_type.image.url }}" 
+                            alt="{{ product_type.name }}" 
+                            class="w-full h-full object-contain"
+                        >
+                        {% else %}
+                        <div class="w-full h-full bg-white/10 rounded flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <span class="text-white/80 group-hover:text-white text-sm transition-colors">
+                        {{ product_type.name }}
+                    </span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock hero %}
+
+{% block main %}
+{% if not category.parent and products %}
+<section class="py-12 lg:py-16 bg-white">
+    <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-8" style="font-family: 'Helvetica Bold', Arial, sans-serif;">
+            Все товары категории
+        </h2>
+        
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Сайдбар с подкатегориями -->
+            <aside class="w-full lg:w-72 flex-shrink-0">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Подкатегории</h3>
+                <ul class="space-y-2 mb-6">
+                    {% for child in category.children.all %}
+                    <li>
+                        <a href="{{ child.get_absolute_url }}" class="text-gray-600 hover:text-[#ED1C24] transition-colors text-sm">
+                            {{ child.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                
+                <div class="bg-gray-50 rounded-lg p-4 flex items-start gap-3">
+                    <svg class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <p class="text-sm text-gray-600">
+                        Выберите подкатегорию для фильтрации товаров
+                    </p>
+                </div>
+            </aside>
+            
+            <!-- Основной контент с товарами -->
+            <div class="flex-1 relative">
+                {% include "catalog/_products_list.html" %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock main %}
