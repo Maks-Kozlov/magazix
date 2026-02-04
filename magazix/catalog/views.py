@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.views.generic import DetailView
 from django.views.generic import ListView
-from meta.views import MetaDetailViewMixin
+from meta.views import MetadataMixin
 
 from .models import Category
 from .models import Product
@@ -14,19 +14,19 @@ class CategoryListView(ListView):
     context_object_name = "categories"
 
 
-class CategoryDetailView(MetaDetailViewMixin, DetailView):
+class CategoryDetailView(MetadataMixin, DetailView):
     model = Category
     template_name = "catalog/category_detail.html"
     context_object_name = "category"
 
 
-class ProductTypeDetailView(MetaDetailViewMixin, DetailView):
+class ProductTypeDetailView(MetadataMixin, DetailView):
     model = ProductType
     template_name = "catalog/type_detail.html"
     context_object_name = "product_type"
 
 
-class ProductDetailView(MetaDetailViewMixin, DetailView):
+class ProductDetailView(MetadataMixin, DetailView):
     model = Product
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
